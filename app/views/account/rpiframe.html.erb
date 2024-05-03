@@ -10,8 +10,9 @@
     var source_origin = window.location.origin;
     var target_origin = new URL("<%= @oic_session.client_config['openid_connect_server_url'] %>").origin;
     var session_state = "<%= @oic_session.session_state %>";
+    var alerted = false;
+
     var mes = client_id + " " + session_state;
-    var reauthorize_url = "<%= oic_local_logout_url %>";
     var timer = setInterval(checkSession(), check_interval);
 
     function checkSession() {
@@ -24,8 +25,10 @@
       if (e.origin !== target_origin) { return alert('Wrong target origin: ' + target_origin); }
       stat = e.data;
 
-      if (stat == "changed") {
-        window.parent.location.href = reauthorize_url;
+      if (stat == "changed" && !alerted) {
+        window.alert("Your session is not valid. Please copy your changes and refresh the page to login.");
+        alerted = true
+        window.location.href = window.location.origin + "/logout";
       }
     }
   </script>
