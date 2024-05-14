@@ -26,9 +26,9 @@
       stat = e.data;
 
       if (stat == "changed" && !alerted) {
-        window.alert("Your session is not valid. Please copy your changes and refresh the page to login.");
         alerted = true
         window.location.href = window.location.origin + "/logout";
+        window.alert("Your session is not valid. Please copy your changes and refresh the page to login.");
       }
     }
   </script>
