@@ -11,7 +11,14 @@
     var target_origin = new URL("<%= @oic_session.client_config['openid_connect_server_url'] %>").origin;
     var session_state = "<%= @oic_session.session_state %>";
     var alerted = false;
+    var last_alert = 0;
 
+    // Create an iframe used to logout user if their session has expired
+    var logout_iframe = document.createElement("iframe");
+    logout_iframe.style.display = "none";
+    logout_iframe.setAttribute("id", "logout_iframe");
+    window.parent.document.head.appendChild(logout_iframe);
+    
     var mes = client_id + " " + session_state;
     var timer = setInterval(checkSession(), check_interval);
 
@@ -25,9 +32,13 @@
       if (e.origin !== target_origin) { return alert('Wrong target origin: ' + target_origin); }
       stat = e.data;
 
-      if (stat == "changed" && !alerted) {
-        alerted = true
-        window.location.href = window.location.origin + "/logout";
+      let current_time = Date.now();
+      if (stat == "changed" && (!alerted || (current_time - last_alert) > 60)) {
+        alerted = true;
+        last_alert = Date.now() / (1000*60);
+        let logout_iframe = document.getElementById("logout_iframe");
+        logout_iframe.setAttribute("src", window.location.origin + "/logout");
+        
         window.alert("Your session is not valid. Please copy your changes and refresh the page to login.");
       }
     }
