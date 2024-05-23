@@ -32,7 +32,7 @@
       if (e.origin !== target_origin) { return alert('Wrong target origin: ' + target_origin); }
       stat = e.data;
 
-      let current_time = Date.now();
+      let current_time = Date.now() / (1000*60);
       if (stat == "changed" && (!alerted || (current_time - last_alert) > 60)) {
         alerted = true;
         last_alert = Date.now() / (1000*60);
