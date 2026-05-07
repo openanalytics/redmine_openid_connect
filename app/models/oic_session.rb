@@ -2,6 +2,7 @@ class OicSession < ActiveRecord::Base
 
   before_create :randomize_state!
   before_create :randomize_nonce!
+  before_create :clean_old_oic_with_null_user
 
   def self.client_config
     Setting.plugin_redmine_openid_connect
@@ -182,6 +183,10 @@ class OicSession < ActiveRecord::Base
     end
 
     @user
+  end
+
+  def clean_old_oic_with_null_user
+    OicSession.where("user_id is null and updated_at < ?", 7.days.ago).delete_all
   end
 
   def authorization_url
