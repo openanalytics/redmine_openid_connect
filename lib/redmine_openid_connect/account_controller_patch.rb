@@ -22,7 +22,7 @@ module RedmineOpenidConnect
     rescue ActiveRecord::RecordNotFound => e
       redirect_to oic_local_logout_url
     end
-    
+
     # performs redirect to SSO server
     def oic_login
       if session[:oic_session_id].blank?
@@ -180,3 +180,5 @@ module RedmineOpenidConnect
     end
   end # AccountControllerPatch
 end
+
+AccountController.prepend RedmineOpenidConnect::AccountControllerPatch

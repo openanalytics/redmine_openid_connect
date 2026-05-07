@@ -38,3 +38,5 @@ module RedmineOpenidConnect
     end
   end # ApplicationControllerPatch
 end
+
+ApplicationController.prepend RedmineOpenidConnect::ApplicationControllerPatch

@@ -1,2 +1,2 @@
 source 'https://rubygems.org'
-gem 'httparty', '~> 0.24.2'
+gem 'httparty', '~> 0.21.0'
