@@ -84,7 +84,7 @@ module RedmineOpenidConnect
       return invalid_credentials unless oic_session.authorized?
 
       # Check if there's already an existing user
-      user = User.find_by_mail(user_info['email'])
+      user = User.find_by_mail(user_info['email']) || nil
 
       if user.nil?
         unless OicSession.create_user_if_not_exists?
